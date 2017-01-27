@@ -1,5 +1,5 @@
 /**
- * Jewellery Seller React Native App
+ * Seller React Native App
  */
 
 import {
@@ -7,4 +7,4 @@ import {
 } from 'react-native';
 import App from './src/App';
 
-AppRegistry.registerComponent('JwlSelIOS', () => App);
+AppRegistry.registerComponent('JwlSelAnd', () => App);
