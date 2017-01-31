@@ -7,4 +7,4 @@ import {
 } from 'react-native';
 import App from './src/App';
 
-AppRegistry.registerComponent('JwlSelAnd', () => App);
+AppRegistry.registerComponent('JwlSelIOS', () => App);
