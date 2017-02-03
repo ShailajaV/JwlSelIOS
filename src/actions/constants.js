@@ -43,3 +43,4 @@ export const PLACEHOLDER_COMPANY_NAME = 'Zales Daimonds';
 export const LABEL_SELLER_ADDRESS = 'Address';
 export const PLACEHOLDER_SELLER_ADDRESS =
 '   South Bay Galleria, 1815 \n Hawthrone Blvd, Redondo Beach, \n CA 90278';
+export const SEND = 'send';
