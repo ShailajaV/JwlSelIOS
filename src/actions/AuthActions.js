@@ -40,6 +40,11 @@ export const signUp = () => {
     Actions.signUp();
   };
 };
+export const forgotPassword = () => {
+  return () => {
+    Actions.forgotPassword();
+  };
+};
 
 const logInPage = (dispatch) => {
   dispatch({ type: LOGOUT_USER });
@@ -81,7 +86,7 @@ const loginUserSuccess = (dispatch, user) => {
     payload: user
   });
 
-  Actions.main();
+  Actions.seller();
 };
 
 /* Register new account
