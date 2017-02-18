@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import { userDetailsChanged, loginUser, forgotPassword } from '../../actions';
 import { Card, CardSection, Input, Button, Spinner, BackgroundImage } from '../common';
 import {
@@ -16,26 +17,22 @@ import {
 
 class LoginForm extends Component {
 
-  onForgotPassword(text) {
-    this.props.forgotPassword(text);
-  }
-
   onButtonPress() {
     const { email, password } = this.props;
     this.props.loginUser({ email, password });
   }
-  onPress() {
-    const { email } = this.props;
-    this.props.forgotPassword({ email });
+
+  onForgotPassword() {
+    Actions.forgotPassword();
   }
+
   renderForgotPassword() {
     return (
-      <Button onPress={this.onPress.bind(this)}>
+      <Button onPress={this.onForgotPassword.bind(this)}>
       {FORGOT_PASSWORD}
       </Button>
     );
   }
-
 
   renderButton() {
     if (this.props.loading) {
@@ -59,7 +56,6 @@ class LoginForm extends Component {
               value={this.props.email}
               onChangeText={value =>
                 this.props.userDetailsChanged({ prop: 'email', value })}
-              style={styles.labelStyle}
             />
           </CardSection>
 
