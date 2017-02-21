@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../../actions';
+import { Actions } from 'react-native-router-flux';
+import { userDetailsChanged, loginUser, forgotPassword } from '../../actions';
 import { Card, CardSection, Input, Button, Spinner, BackgroundImage } from '../common';
 import {
   LABEL_EMAIL,
@@ -10,21 +11,27 @@ import {
   LABEL_PASSWORD,
   PLACEHOLDER_PASSWORD,
   SIGN_IN,
-  SPINNER_SIZE
+  SPINNER_SIZE,
+  FORGOT_PASSWORD
 } from '../../actions/constants';
 
 class LoginForm extends Component {
-  onEmailChange(text) {
-    this.props.emailChanged(text);
-  }
-
-  onPasswordChange(text) {
-    this.props.passwordChanged(text);
-  }
 
   onButtonPress() {
     const { email, password } = this.props;
     this.props.loginUser({ email, password });
+  }
+
+  onForgotPassword() {
+    Actions.forgotPassword();
+  }
+
+  renderForgotPassword() {
+    return (
+      <Button onPress={this.onForgotPassword.bind(this)}>
+      {FORGOT_PASSWORD}
+      </Button>
+    );
   }
 
   renderButton() {
@@ -46,8 +53,9 @@ class LoginForm extends Component {
             <Input
               label={LABEL_EMAIL}
               placeholder={PLACEHOLDER_EMAIL}
-              onChangeText={this.onEmailChange.bind(this)}
               value={this.props.email}
+              onChangeText={value =>
+                this.props.userDetailsChanged({ prop: 'email', value })}
             />
           </CardSection>
 
@@ -56,8 +64,9 @@ class LoginForm extends Component {
               secureTextEntry
               label={LABEL_PASSWORD}
               placeholder={PLACEHOLDER_PASSWORD}
-              onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password}
+              onChangeText={value =>
+                this.props.userDetailsChanged({ prop: 'password', value })}
             />
           </CardSection>
           <Text style={styles.errorTextStyle}>
@@ -66,7 +75,8 @@ class LoginForm extends Component {
 
           <CardSection>
             {this.renderButton()}
-          </CardSection>
+            {this.renderForgotPassword()}
+         </CardSection>
         </Card>
       </BackgroundImage>
     );
@@ -84,6 +94,14 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  forgotPasswordStyle: {
+    flex: 1,
+    color: 'blue',
+    fontSize: 20,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    fontFamily: 'Cochin'
   }
 };
 
@@ -93,5 +111,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps,
-  { emailChanged, passwordChanged, loginUser
+  { userDetailsChanged, loginUser, forgotPassword
   })(LoginForm);

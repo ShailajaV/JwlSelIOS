@@ -1,24 +1,18 @@
-/* This file includes all auth action creaters */
+/* This file includes all auth action creators */
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 //import Communications from 'react-native-communications';
 import {
-  FULLNAME_CHANGED,
-  EMAIL_CHANGED,
-  PASSWORD_CHANGED,
+  USER_DETAILS_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
   LOGOUT_USER,
-  ADDRSTREET_CHANGED,
-  ADDRAPT_CHANGED,
-  STATE_CHANGED,
-  CITY_CHANGED,
-  ZIP_CHANGED,
-  PHONENUM_CHANGED
+  PASSWORD_RESET_SUCCESS,
+  PASSWORD_RESET_FAIL
 } from './types';
 import {
-  ERR_AUTH_FAILED,
+  ERRMSG_AUTH_FAILED,
   ERRCODE_EMAIL_INUSE,
   ERRMSG_EMAIL_INUSE,
   ERRCODE_INVALID_EMAIL,
@@ -31,10 +25,14 @@ import {
   ERRMSG_USER_NOTFOUND,
   ERRCODE_WRONG_PASSWORD,
   ERRMSG_WRONG_PASSWORD,
-  ERRMSG_SIGNUP_FAILED
+  ERRMSG_SIGNUP_FAILED,
+  ERRMSG_PASSWORD_RESET_FAILED
 } from './errorMsgConstants';
-//import { EMAIL_SUBJECT, EMAIL_BODY } from './constants';
 
+/* Sign in page
+* @parameter
+* @return : login form
+*/
 export const signIn = () => {
   return (dispatch) => {
     logInPage(dispatch);
@@ -42,6 +40,10 @@ export const signIn = () => {
   };
 };
 
+/* Sign up page
+* @parameter
+* @return : register form
+*/
 export const signUp = () => {
   return (dispatch) => {
     logInPage(dispatch);
@@ -49,70 +51,38 @@ export const signUp = () => {
   };
 };
 
+/* Password reset
+* @parameter: email
+* @return : OTPForm
+*/
+export const passwordReset = ({ email }) => {
+  return (dispatch) => {
+    firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
+      dispatch({
+        type: PASSWORD_RESET_SUCCESS
+      });
+      Actions.logIn();
+    })
+    .catch((error) => {
+      handleForgotPasswordErrorMessages(dispatch, error.code);
+    });
+  };
+};
+
+// move to login or register page
 const logInPage = (dispatch) => {
   dispatch({ type: LOGOUT_USER });
 };
 
-export const fullNameChanged = (text) => {
+/* Assign all auth values to corresponding keys
+* @parameter: prop, value
+* @return : prop, value
+*/
+export const userDetailsChanged = ({ prop, value }) => {
   return {
-    type: FULLNAME_CHANGED,
-    payload: text
-  };
-};
-
-export const emailChanged = (text) => {
-  return {
-    type: EMAIL_CHANGED,
-    payload: text
-  };
-};
-
-export const passwordChanged = (text) => {
-  return {
-    type: PASSWORD_CHANGED,
-    payload: text
-  };
-};
-
-export const addrStreetChanged = (text) => {
-  return {
-    type: ADDRSTREET_CHANGED,
-    payload: text
-  };
-};
-
-export const addrAptChanged = (text) => {
-  return {
-    type: ADDRAPT_CHANGED,
-    payload: text
-  };
-};
-
-export const stateChanged = (text) => {
-  return {
-    type: STATE_CHANGED,
-    payload: text
-  };
-};
-
-export const cityChanged = (text) => {
-  return {
-    type: CITY_CHANGED,
-    payload: text
-  };
-};
-
-export const zipChanged = (text) => {
-  return {
-    type: ZIP_CHANGED,
-    payload: text
-  };
-};
-
-export const phoneNumChanged = (text) => {
-  return {
-    type: PHONENUM_CHANGED,
-    payload: text
+    type: USER_DETAILS_CHANGED,
+    payload: { prop, value }
   };
 };
 
@@ -132,6 +102,7 @@ export const loginUser = ({ email, password }) => {
   };
 };
 
+// User login fail
 const loginUserFail = (dispatch, text) => {
   dispatch({
     type: LOGIN_USER_FAIL,
@@ -139,13 +110,22 @@ const loginUserFail = (dispatch, text) => {
   });
 };
 
+// User login success
 const loginUserSuccess = (dispatch, user) => {
   dispatch({
     type: LOGIN_USER_SUCCESS,
     payload: user
   });
 
-  Actions.main();
+  Actions.seller();
+};
+
+// Password reset fail
+const passwordResetFail = (dispatch, text) => {
+  dispatch({
+    type: PASSWORD_RESET_FAIL,
+    payload: text
+  });
 };
 
 /* Register new account
@@ -155,6 +135,7 @@ const loginUserSuccess = (dispatch, user) => {
 export const createUserAccount = ({ fullName,
   email,
   password,
+  companyName,
   addrStreet,
   addrApt,
   state,
@@ -162,22 +143,19 @@ export const createUserAccount = ({ fullName,
   zip,
   phoneNum
 }) => {
-  console.log('fullName ', fullName, 'addrStreet', addrStreet, 'addrApt', addrApt, 'state', state,
-  'city', city, 'zip', zip, 'phoneNum', phoneNum);
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
         const { currentUser } = firebase.auth();
-        firebase.database().ref(`/users/${currentUser.uid}/`)
-          .push({ fullName, addrStreet, addrApt, state, city, zip, phoneNum })
-          .then((finalUser) => {
+        const address = `${addrStreet},${addrApt},${city},${state},${zip}`;
+        firebase.database().ref(`/sellers/${currentUser.uid}/`)
+          .push({ fullName, companyName, address, phoneNum })
+          .then(() => {
             loginUserSuccess(dispatch, user);
-            console.log('userdata ', finalUser);
           })
           .catch(() => {
-            firebase.database().ref(`/users/${currentUser.uid}/`)
-            .remove()
+            firebase.auth().currentUser.delete()
             .then(() => {
               loginUserFail(dispatch, ERRMSG_SIGNUP_FAILED);
             })
@@ -207,6 +185,7 @@ export const logOut = () => {
   };
 };
 
+// User sign in error messages
 const handleSignInErrorMessages = (dispatch, errorCode) => {
   let errorMsg;
   switch (errorCode) {
@@ -223,11 +202,12 @@ const handleSignInErrorMessages = (dispatch, errorCode) => {
       errorMsg = ERRMSG_WRONG_PASSWORD;
       break;
     default:
-      errorMsg = ERR_AUTH_FAILED;
+      errorMsg = ERRMSG_AUTH_FAILED;
     }
     loginUserFail(dispatch, errorMsg);
 };
 
+// User sign up error messages
 const handleSignUpErrorMessages = (dispatch, errorCode) => {
   let errorMsg;
   switch (errorCode) {
@@ -241,7 +221,23 @@ const handleSignUpErrorMessages = (dispatch, errorCode) => {
       errorMsg = ERRMSG_WEAK_PASSWORD;
       break;
     default:
-      errorMsg = ERR_AUTH_FAILED;
+      errorMsg = ERRMSG_AUTH_FAILED;
     }
     loginUserFail(dispatch, errorMsg);
+};
+
+// Forgot password error messages
+const handleForgotPasswordErrorMessages = (dispatch, errorCode) => {
+  let errorMsg;
+  switch (errorCode) {
+    case ERRCODE_INVALID_EMAIL:
+      errorMsg = ERRMSG_INVALID_EMAIL;
+      break;
+    case ERRCODE_USER_NOTFOUND:
+      errorMsg = ERRMSG_USER_NOTFOUND;
+      break;
+    default:
+      errorMsg = ERRMSG_PASSWORD_RESET_FAILED;
+    }
+    passwordResetFail(dispatch, errorMsg);
 };
