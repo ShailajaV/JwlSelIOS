@@ -4,12 +4,12 @@ import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { Actions } from 'react-native-router-flux';
 import SideMenu from 'react-native-side-menu';
-import { Image } from 'react-native';
+import { Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
 import Router from './Router';
 import reducers from './reducers';
-import { BackgroundImage, Button } from './components/common';
+import { BackgroundImage } from './components/common';
 import { Menu } from './components/common/Menu';
 
 class App extends Component {
@@ -67,18 +67,15 @@ class App extends Component {
 
     return (
       <BackgroundImage>
+      <View>
+          <Text onPress={() => this.toggle()}> = </Text>
+        </View>
         <SideMenu
           menu={menu}
           isOpen={this.state.isOpen}
           onChange={(isOpen) => this.updateMenuState(isOpen)}
         >
-          <Button style={styles.button} onPress={() => this.toggle()}>
-            <Image
-              source={require('./components/common/images/editimage.png')}
-              style={styles.imageStyle}
-              resizeMode={Image.resizeMode.sretch}
-            />
-          </Button>
+
           <Provider store={store}>
             <Router />
           </Provider>
