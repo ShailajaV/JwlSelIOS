@@ -4,12 +4,13 @@ import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { Actions } from 'react-native-router-flux';
 import SideMenu from 'react-native-side-menu';
+import NavigationBar from 'react-native-navbar';
 import { Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
 import Router from './Router';
 import reducers from './reducers';
-import { BackgroundImage } from './components/common';
+import { BackgroundImage, Header } from './components/common';
 import { Menu } from './components/common/Menu';
 
 class App extends Component {
@@ -65,37 +66,25 @@ class App extends Component {
     const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
 
-    return (
+
+  return (
       <BackgroundImage>
-      <View>
-          <Text onPress={() => this.toggle()}> = </Text>
-        </View>
+
         <SideMenu
           menu={menu}
           isOpen={this.state.isOpen}
           onChange={(isOpen) => this.updateMenuState(isOpen)}
         >
-
-          <Provider store={store}>
+        <View>
+        <Header headerText='Toggle' onPress={() => this.toggle()} />
+        </View>
+      <Provider store={store}>
             <Router />
           </Provider>
+
         </SideMenu>
       </BackgroundImage>
     );
   }
 }
-
-const styles = {
-  button: {
-    position: 'absolute',
-    top: 0,
-    padding: 2,
-  },
-  imageStyle: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
-    alignSelf: 'flex-end'
-  }
-};
 export default App;

@@ -5,6 +5,7 @@ import { signIn, signUp } from '../../actions';
 import { Card, CardSection, Button, BackgroundImage } from '../common';
 import { SIGN_IN, SIGN_UP } from '../../actions/constants';
 
+
 class PreLoginForm extends Component {
 
   onLogInButton() {
@@ -17,6 +18,7 @@ class PreLoginForm extends Component {
 
   render() {
     return (
+      
       <BackgroundImage>
         <Card style={styles.containerStyle}>
           <CardSection>
@@ -29,6 +31,7 @@ class PreLoginForm extends Component {
           </CardSection>
         </Card>
       </BackgroundImage>
+
     );
   }
 }
