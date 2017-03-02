@@ -4,8 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { Actions } from 'react-native-router-flux';
 import SideMenu from 'react-native-side-menu';
-import NavigationBar from 'react-native-navbar';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
 import Router from './Router';
@@ -42,7 +41,7 @@ class App extends Component {
       case 'LoginForm':
         return Actions.logIn();
       case 'AccountSettings':
-        return Actions.sellerProfile();
+       return Actions.sellerProfile();
       case 'ProductCreate':
         return Actions.productDetails();
       case 'ProductDetails':
