@@ -1,10 +1,10 @@
 /* Welcome file which starts rendering the app */
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 import SideMenu from 'react-native-side-menu';
 import { View } from 'react-native';
-import { Actions } from 'react-native-router-flux'; 
+import { Provider } from 'react-redux';
+import firebase from 'firebase';
 import { BackgroundImage, Header } from './components/common';
 import { Menu } from './components/common/Menu';
 import Router from './Router';
@@ -40,7 +40,7 @@ class App extends Component {
       case 'LoginForm':
         return Actions.logIn();
       case 'AccountSettings':
-        return Actions.sellerProfile();
+       return Actions.sellerProfile();
       case 'ProductCreate':
         return Actions.productDetails();
       case 'ProductDetails':
