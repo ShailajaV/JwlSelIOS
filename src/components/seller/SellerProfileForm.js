@@ -6,6 +6,7 @@ import { View, Image, Text, TouchableOpacity,
 import { Actions } from 'react-native-router-flux';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
+
 import { Card, CardSection, Input, MultilineInput, Button,
   BackgroundImage } from '../common';
 import { LABEL_SELLER_NAME, LABEL_COMPANY_NAME,
@@ -130,6 +131,7 @@ class SellerProfileForm extends Component {
     } else {
       srcImg = { uri: this.props.image };
     }
+
 
     return (
       <BackgroundImage>
