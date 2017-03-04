@@ -40,7 +40,7 @@ class App extends Component {
       case 'LoginForm':
         return Actions.logIn();
       case 'AccountSettings':
-       return Actions.sellerProfile();
+        return Actions.sellerProfile();
       case 'ProductCreate':
         return Actions.productDetails();
       case 'ProductDetails':
@@ -74,9 +74,9 @@ class App extends Component {
         <View>
         <Header headerText='Toggle' onPress={() => this.toggle()} />
         </View>
-      <Provider store={store}>
-            <Router />
-          </Provider>
+      	<Provider store={store}>
+        	<Router />
+      	</Provider>
 
         </SideMenu>
       </BackgroundImage>
