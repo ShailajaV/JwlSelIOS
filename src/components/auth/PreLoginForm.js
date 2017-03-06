@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signIn, signUp } from '../../actions';
-import { Card, CardSection, Button, BackgroundImage } from '../common';
+import { Card, CardSection, Button } from '../common';
 import { SIGN_IN, SIGN_UP } from '../../actions/constants';
 
 
@@ -18,8 +18,8 @@ class PreLoginForm extends Component {
 
   render() {
     return (
-      
-      <BackgroundImage>
+
+
         <Card style={styles.containerStyle}>
           <CardSection>
             <Button onPress={this.onLogInButton.bind(this)}>
@@ -30,7 +30,7 @@ class PreLoginForm extends Component {
             </Button>
           </CardSection>
         </Card>
-      </BackgroundImage>
+
 
     );
   }

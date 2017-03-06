@@ -5,7 +5,7 @@ import SideMenu from 'react-native-side-menu';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
-import { BackgroundImage, Header } from './components/common';
+import { MenuHeader } from './components/common';
 import { Menu } from './components/common/Menu';
 import Router from './Router';
 import configureStore from './ConfigureStore';
@@ -64,22 +64,21 @@ class App extends Component {
     const store = configureStore();
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     return (
-      <BackgroundImage>
+
 
         <SideMenu
           menu={menu}
           isOpen={this.state.isOpen}
           onChange={(isOpen) => this.updateMenuState(isOpen)}
         >
-        <View>
-        <Header headerText='Toggle' onPress={() => this.toggle()} />
+        <View style={{ backgroundColor: '#1abc9c' }}>
+        <MenuHeader headerText='Toggle' onPress={() => this.toggle()} />
         </View>
-      	<Provider store={store}>
-        	<Router />
-      	</Provider>
-
+      <Provider store={store}>
+        <Router />
+      </Provider>
         </SideMenu>
-      </BackgroundImage>
+
     );
   }
 }
