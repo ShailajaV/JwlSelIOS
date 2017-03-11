@@ -1,20 +1,18 @@
 /* Welcome file which starts rendering the app */
 import React, { Component } from 'react';
-import { Actions } from 'react-native-router-flux';
-import SideMenu from 'react-native-side-menu';
-import { View } from 'react-native';
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import firebase from 'firebase';
+import SideMenu from 'react-native-side-menu';
+import { Actions } from 'react-native-router-flux';
 import { MenuHeader } from './components/common';
-import { Menu } from './components/common/Menu';
+import Menu from './components/menu/Menu';
 import Router from './Router';
-import configureStore from './ConfigureStore';
-
+import { logOut } from './actions';
 
 class App extends Component {
   state = {
-    isOpen: false,
-    selectedItem: 'About',
+      isOpen: false,
+      selectedItem: 'LoginForm',
   };
 
   componentWillMount() {
@@ -47,6 +45,8 @@ class App extends Component {
         return Actions.productsList();
       case 'ForgotPassword':
         return Actions.forgotPassword();
+      case 'Logout':
+        return this.props.logOut();
       default:
         return Actions.logIn();
     }
@@ -61,27 +61,18 @@ class App extends Component {
   }
 
   render() {
-    const store = configureStore();
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
     return (
-
-
-        <SideMenu
-          menu={menu}
-          isOpen={this.state.isOpen}
-          onChange={(isOpen) => this.updateMenuState(isOpen)}
-        >
-        <View style={{ backgroundColor: '#1abc9c' }}>
+      <SideMenu
+        menu={menu}
+        isOpen={this.state.isOpen}
+        onChange={(isOpen) => this.updateMenuState(isOpen)}
+      >
         <MenuHeader headerText='Toggle' onPress={() => this.toggle()} />
-        </View>
-      <Provider store={store}>
         <Router />
-      </Provider>
-        </SideMenu>
-
+      </SideMenu>
     );
   }
 }
 
-
-export default App;
+export default connect(null, { logOut })(App);
