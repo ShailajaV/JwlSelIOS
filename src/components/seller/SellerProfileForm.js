@@ -153,7 +153,7 @@ class SellerProfileForm extends Component {
               <CardSection />
               <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                 <Image
-                  source={require('../common/images/editImage.png')}
+                  source={require('../common/images/editimage.png')}
                   style={styles.imageStyle}
                   resizeMode={Image.resizeMode.sretch}
                 />
@@ -163,7 +163,7 @@ class SellerProfileForm extends Component {
           <CardSection style={{ justifyContent: 'flex-end' }}>
             <TouchableOpacity onPress={this.makeEditable.bind(this)}>
               <Image
-                source={require('../common/images/editImage.png')}
+                source={require('../common/images/editimage.png')}
                 style={styles.imageStyle}
                 resizeMode={Image.resizeMode.sretch}
               />

@@ -35,7 +35,7 @@ class ProductListItem extends Component {
             <View>
               <TouchableOpacity onPress={this.onEdit.bind(this)}>
                 <Image
-                  source={require('../common/images/editImage.png')}
+                  source={require('../common/images/editimage.png')}
                   style={styles.imageStyle}
                   resizeMode={Image.resizeMode.sretch}
                 />
