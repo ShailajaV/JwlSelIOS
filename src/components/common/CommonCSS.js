@@ -101,7 +101,8 @@ export default {
     fontSize: 18,
     lineHeight: 60,
     flex: 2,
-    //backgroundColor: '#fff'
+    borderBottomWidth: 1,
+    borderColor: '#fff'
   },
 
   mulInpcontainerStyle: {
