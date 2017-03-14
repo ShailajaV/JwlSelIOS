@@ -116,7 +116,7 @@ export default {
     backgroundColor: '#F8F8F8',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    height: 60,
+    height: 40,
     paddingTop: 15,
   },
 
