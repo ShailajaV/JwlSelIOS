@@ -13,6 +13,7 @@ class App extends Component {
   state = {
       isOpen: false,
       selectedItem: 'LoginForm',
+      isLoggedIn: false
   };
 
   componentWillMount() {
@@ -23,8 +24,17 @@ class App extends Component {
     storageBucket: 'jewellery-ece6f.appspot.com',
     messagingSenderId: '601320078334'
     };
-  firebase.initializeApp(config);
+    firebase.initializeApp(config);
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ isLoggedIn: true });
+      } else {
+        this.setState({ isLoggedIn: false });
+      }
+    });
   }
+
   onMenuItemSelected = (item) => {
     this.setState({
       isOpen: false,
@@ -38,11 +48,23 @@ class App extends Component {
       case 'LoginForm':
         return Actions.logIn();
       case 'AccountSettings':
-        return Actions.sellerProfile();
+        if (this.state.isLoggedIn) {
+          return Actions.sellerProfile();
+        }
+        this.toggle();
+        return null;
       case 'ProductCreate':
+      if (this.state.isLoggedIn) {
         return Actions.productDetails();
+      }
+      this.toggle();
+      return null;
       case 'ProductDetails':
+      if (this.state.isLoggedIn) {
         return Actions.productsList();
+      }
+      this.toggle();
+      return null;
       case 'ForgotPassword':
         return Actions.forgotPassword();
       case 'Logout':
