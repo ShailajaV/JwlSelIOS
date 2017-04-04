@@ -1,4 +1,4 @@
-package com.jwlseland;
+package com.jwlselios;
 
 import android.app.Application;
 import android.util.Log;
@@ -31,10 +31,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new VectorIconsPackage(),
+			new VectorIconsPackage(),
             new ImagePickerPackage(),
-            new RNFetchBlobPackage(),
-            new RNFSPackage()
+            new RNFSPackage(),
+            new RNFetchBlobPackage()
       );
     }
   };
