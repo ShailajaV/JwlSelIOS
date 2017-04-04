@@ -1,10 +1,9 @@
-package com.jwlselios;
+package com.jwlseland;
 
 import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -33,10 +32,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new VectorIconsPackage(),
-			new VectorIconsPackage(),
             new ImagePickerPackage(),
-            new RNFSPackage(),
-            new RNFetchBlobPackage()
+            new RNFetchBlobPackage(),
+            new RNFSPackage()
       );
     }
   };
